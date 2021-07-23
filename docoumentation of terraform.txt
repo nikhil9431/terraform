@@ -1,0 +1,82 @@
+how to use terraform :-
+**********************
+
+first of all we create a linux based instance than we will connect with  puuty.
+
+cd /
+mkdir terrform
+cd terrform 
+wget https://releases.hashicorp.com/terraform/1.0.1/terraform_1.0.1_linux_amd64.zip
+ls or ll
+unzip the file
+mv terraform /usr/bin/
+terraform -v
+
+after that we will configure with aws cli:-
+*******************************************
+using iam user providing Access key ID and sceret key ID 
+
+
+after that we will create a directory:-
+**************************************
+
+mkdir filename
+cd filename
+vim filename.tf
+
+to run a terraform documentation:-
+********************************
+
+ terraform init          Prepare your working directory for other commands
+ terraform validate      Check whether the configuration is valid
+ terraform plan          Show changes required by the current configuration
+ terraform apply         Create or update infrastructure
+ terraform destroy       Destroy previously-created infrastructure
+
+
+
+day 1 vpc creation:
+******************
+
+# Cloud Service Provider Info
+provider "aws" {
+  region = "eu-central-1"
+}
+
+# Creating VPC
+resource "aws_vpc" "hitech_vpc" {
+  cidr_block = var.VPC_CIDR
+ 
+  tags = {
+    Name = "VPC-01"
+  }
+}
+
+# Creating Subnet-01
+resource "aws_subnet" "Subnet_01" {
+  cidr_block = var.Subnet01_CIDR
+  vpc_id = aws_vpc.hitech_vpc.id
+ 
+  tags = {
+    Name = "Subnet-01"
+  }
+}
+
+# Creating Subnet-02
+resource "aws_subnet" "subnet_02" {
+  cidr_block = var.Subnet01_CIDR
+  vpc_id = aws_vpc.hitech_vpc.id
+ 
+  tags = {
+    Name = "Subnet-02"
+  }
+}
+
+# Creating Internet gateway
+resource "aws_internet_gateway" "HT_Igw" {
+  vpc_id = aws_vpc.hitech_vpc.id
+
+  tags = {
+    Name = "HT-IGW"
+  }
+}
